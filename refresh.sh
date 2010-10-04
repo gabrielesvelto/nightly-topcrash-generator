@@ -35,15 +35,23 @@ do
 EOM
     ls -d "$LOCALCACHE/$DAY"* | while read DIR
     do
-        ls -r "$DIR" | grep "\.en-US\.\(linux-i686\|mac\|win32\)\.txt$" | while read TXTFILE
+        ls -r "$DIR" | grep "\.en-US\.\(linux-i686\|mac\|mac64\|win32\)\.txt$" | while read TXTFILE
         do
             TXTPATH="$DIR/$TXTFILE"
             ORIGOS=$(echo "$TXTFILE" | sed 's/.*\.en-US\.//;s/\.txt$//')
-            STATSOS=$(echo "$ORIGOS" | sed 's/win32/windows/;s/linux-i686/linux/')
+            STATSOS=$(echo "$ORIGOS" | sed 's/win32/windows/;s/linux-i686/linux/;s/mac64/mac/')
             BUILDID=$(cat "$TXTPATH" | awk '{ print $1 }')
+            FXVER=$(echo "$TXTFILE" | sed 's/^firefox-//;s/\.en-US\..*//')
+            case "$FXVER" in 
+              3.5*) BRANCH=1.9.1 ;;
+              3.6*) BRANCH=1.9.2 ;;
+              3.7*) BRANCH=1.9.3 ;;
+              4.0*) BRANCH=2.0 ;;
+              *)    BRANCH=unknown ;;
+            esac
             CSET=$(cat "$TXTPATH" | awk '{ print $2 }')
             cat >>$DESTHTML <<EOM
-<a href="http://crash-stats.mozilla.com/query/query?product=Firefox&amp;platform=$STATSOS&amp;branch=1.9.3&amp;date=&amp;range_value=31&amp;range_unit=days&amp;query_search=signature&amp;query_type=exact&amp;query=&amp;build_id=$BUILDID&amp;process_type=all&amp;do_query=1">$ORIGOS</a>
+<a href="http://crash-stats.mozilla.com/query/query?product=Firefox&amp;platform=$STATSOS&amp;branch=$BRANCH&amp;date=&amp;range_value=30&amp;range_unit=days&amp;query_search=signature&amp;query_type=exact&amp;query=&amp;build_id=$BUILDID&amp;process_type=all&amp;do_query=1">$ORIGOS</a>
 EOM
         done
     done
