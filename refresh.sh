@@ -40,7 +40,11 @@ EOM
             TXTPATH="$DIR/$TXTFILE"
             ORIGOS=$(echo "$TXTFILE" | sed 's/.*\.en-US\.//;s/\.txt$//')
             STATSOS=$(echo "$ORIGOS" | sed 's/win32/windows/;s/linux-i686/linux/;s/mac64/mac/')
-            BUILDID=$(cat "$TXTPATH" | awk '{ print $1 }')
+            # The .txt files have different formats on 2011-01-26 and
+            # earlier (one line, space-separated values, changeset value
+            # is only hash) and on 2011-01-27 and later (two lines, and
+            # changeset value is URL).
+            BUILDID=$(head -1 "$TXTPATH" | awk '{ print $1 }')
             FXVER=$(echo "$TXTFILE" | sed 's/^firefox-//;s/\.en-US\..*//')
             case "$FXVER" in 
               3.5*) BRANCH=1.9.1 ;;
