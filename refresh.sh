@@ -43,7 +43,8 @@ EOM
             # The .txt files have different formats on 2011-01-26 and
             # earlier (one line, space-separated values, changeset value
             # is only hash) and on 2011-01-27 and later (two lines, and
-            # changeset value is URL).
+            # changeset value is URL).  See
+            # https://bugzilla.mozilla.org/show_bug.cgi?id=549958 .
             BUILDID=$(head -1 "$TXTPATH" | awk '{ print $1 }')
             FXVER=$(echo "$TXTFILE" | sed 's/^firefox-//;s/\.en-US\..*//')
             case "$FXVER" in 
