@@ -56,7 +56,7 @@ EOM
             esac
             CSET=$(cat "$TXTPATH" | awk '{ print $2 }')
             cat >>$DESTHTML <<EOM
-<a href="http://crash-stats.mozilla.com/query/query?product=Firefox&amp;platform=$STATSOS&amp;branch=$BRANCH&amp;date=&amp;range_value=30&amp;range_unit=days&amp;query_search=signature&amp;query_type=exact&amp;query=&amp;build_id=$BUILDID&amp;process_type=all&amp;do_query=1">$ORIGOS</a>
+<a href="http://crash-stats.mozilla.com/query/query?product=Firefox&amp;platform=$STATSOS&amp;branch=$BRANCH&amp;date=&amp;range_value=30&amp;range_unit=days&amp;query_search=signature&amp;query_type=exact&amp;query=&amp;build_id=$BUILDID&amp;process_type=any&amp;hang_type=any&amp;do_query=1">$ORIGOS</a>
 EOM
         done
     done
