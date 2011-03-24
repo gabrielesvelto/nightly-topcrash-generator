@@ -59,8 +59,14 @@ do
             then
                 CSET=$(head -2 "$TXTPATH" | tail -1 | sed 's,.*/,,')
             fi
-            ALL_REPORTS="$ALL_REPORTS <a title=\"$TIME, rev $CSET\" href=\"http://crash-stats.mozilla.com/query/query?product=Firefox&amp;platform=$STATSOS&amp;branch=$BRANCH&amp;date=&amp;range_value=30&amp;range_unit=days&amp;query_search=signature&amp;query_type=exact&amp;query=&amp;build_id=$BUILDID&amp;process_type=any&amp;hang_type=any&amp;do_query=1\">$ORIGOS</a>"
-            BROWSER_CRASHES="$BROWSER_CRASHES <a title=\"$TIME, rev $CSET\" href=\"http://crash-stats.mozilla.com/query/query?product=Firefox&amp;platform=$STATSOS&amp;branch=$BRANCH&amp;date=&amp;range_value=30&amp;range_unit=days&amp;query_search=signature&amp;query_type=exact&amp;query=&amp;build_id=$BUILDID&amp;process_type=browser&amp;hang_type=crash&amp;do_query=1\">$ORIGOS</a>"
+            if [ "$BRANCH" = "unknown" ]
+            then
+                ALL_REPORTS="$ALL_REPORTS $ORIGOS"
+                BROWSER_CRASHES="$BROWSER_CRASHES $ORIGOS"
+            else
+                ALL_REPORTS="$ALL_REPORTS <a title=\"$TIME, rev $CSET\" href=\"http://crash-stats.mozilla.com/query/query?product=Firefox&amp;platform=$STATSOS&amp;branch=$BRANCH&amp;date=&amp;range_value=30&amp;range_unit=days&amp;query_search=signature&amp;query_type=exact&amp;query=&amp;build_id=$BUILDID&amp;process_type=any&amp;hang_type=any&amp;do_query=1\">$ORIGOS</a>"
+                BROWSER_CRASHES="$BROWSER_CRASHES <a title=\"$TIME, rev $CSET\" href=\"http://crash-stats.mozilla.com/query/query?product=Firefox&amp;platform=$STATSOS&amp;branch=$BRANCH&amp;date=&amp;range_value=30&amp;range_unit=days&amp;query_search=signature&amp;query_type=exact&amp;query=&amp;build_id=$BUILDID&amp;process_type=browser&amp;hang_type=crash&amp;do_query=1\">$ORIGOS</a>"
+            fi
         done
     done
     cat >>$DESTHTML <<EOM
