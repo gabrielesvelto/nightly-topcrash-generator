@@ -50,6 +50,7 @@ do
               3.6*) BRANCH=1.9.2 ;;
               3.7*) BRANCH=1.9.3 ;;
               4.0*) BRANCH=2.0 ;;
+              4.2*) BRANCH=2.2 ;;
               *)    BRANCH=unknown ;;
             esac
             CSET=$(cat "$TXTPATH" | awk '{ print $2 }')
