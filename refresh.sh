@@ -53,9 +53,14 @@ do
               4.2*) BRANCH=2.2 ;;
               *)    BRANCH=unknown ;;
             esac
+            TIME="${BUILDID:8:2}:${BUILDID:10:2}:${BUILDID:12:2}"
             CSET=$(cat "$TXTPATH" | awk '{ print $2 }')
-            ALL_REPORTS="$ALL_REPORTS <a href=\"http://crash-stats.mozilla.com/query/query?product=Firefox&amp;platform=$STATSOS&amp;branch=$BRANCH&amp;date=&amp;range_value=30&amp;range_unit=days&amp;query_search=signature&amp;query_type=exact&amp;query=&amp;build_id=$BUILDID&amp;process_type=any&amp;hang_type=any&amp;do_query=1\">$ORIGOS</a>"
-            BROWSER_CRASHES="$BROWSER_CRASHES <a href=\"http://crash-stats.mozilla.com/query/query?product=Firefox&amp;platform=$STATSOS&amp;branch=$BRANCH&amp;date=&amp;range_value=30&amp;range_unit=days&amp;query_search=signature&amp;query_type=exact&amp;query=&amp;build_id=$BUILDID&amp;process_type=browser&amp;hang_type=crash&amp;do_query=1\">$ORIGOS</a>"
+            if [ -z "$CSET" ]
+            then
+                CSET=$(head -2 "$TXTPATH" | tail -1 | sed 's,.*/,,')
+            fi
+            ALL_REPORTS="$ALL_REPORTS <a title=\"$TIME, rev $CSET\" href=\"http://crash-stats.mozilla.com/query/query?product=Firefox&amp;platform=$STATSOS&amp;branch=$BRANCH&amp;date=&amp;range_value=30&amp;range_unit=days&amp;query_search=signature&amp;query_type=exact&amp;query=&amp;build_id=$BUILDID&amp;process_type=any&amp;hang_type=any&amp;do_query=1\">$ORIGOS</a>"
+            BROWSER_CRASHES="$BROWSER_CRASHES <a title=\"$TIME, rev $CSET\" href=\"http://crash-stats.mozilla.com/query/query?product=Firefox&amp;platform=$STATSOS&amp;branch=$BRANCH&amp;date=&amp;range_value=30&amp;range_unit=days&amp;query_search=signature&amp;query_type=exact&amp;query=&amp;build_id=$BUILDID&amp;process_type=browser&amp;hang_type=crash&amp;do_query=1\">$ORIGOS</a>"
         done
     done
     cat >>$DESTHTML <<EOM
