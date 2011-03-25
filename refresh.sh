@@ -33,11 +33,15 @@ do
     BROWSER_CRASHES=""
     for DIR in $(ls -d "$LOCALCACHE/$DAY"*)
     do
-        for TXTFILE in $(ls -r "$DIR" | grep "\.en-US\.\(linux-i686\|mac\|mac64\|win32\)\.txt$")
+        for TXTFILE in $(ls -r "$DIR" | grep "\.en-US\.\(linux-i686\|linux-x86_64\|mac\|mac64\|win32\|win64-x86_64\)\.txt$")
         do
             TXTPATH="$DIR/$TXTFILE"
             ORIGOS=$(echo "$TXTFILE" | sed 's/.*\.en-US\.//;s/\.txt$//')
-            STATSOS=$(echo "$ORIGOS" | sed 's/win32/windows/;s/linux-i686/linux/;s/mac64/mac/')
+            STATSOS=$(echo "$ORIGOS" | sed 's/win32/windows/;s/win64-x86_64/windows/;s/linux-i686/linux/;s/linux-x86_64/linux/;s/mac64/mac/')
+            # FIXME: If win64/win32 or linux64/linux32 have the same
+            # build ID, I really need to unify them into a single linux
+            # or win link since the queries don't distinguish.
+            DISPLAYOS=$(echo "$ORIGOS" | sed 's/win64-x86_64/win64/;s/linux-i686/linux32/;s/linux-x86_64/linux64/;s/mac64/mac/')
             # The .txt files have different formats on 2011-01-26 and
             # earlier (one line, space-separated values, changeset value
             # is only hash) and on 2011-01-27 and later (two lines, and
@@ -61,11 +65,11 @@ do
             fi
             if [ "$BRANCH" = "unknown" ]
             then
-                ALL_REPORTS="$ALL_REPORTS $ORIGOS"
-                BROWSER_CRASHES="$BROWSER_CRASHES $ORIGOS"
+                ALL_REPORTS="$ALL_REPORTS $DISPLAYOS"
+                BROWSER_CRASHES="$BROWSER_CRASHES $DISPLAYOS"
             else
-                ALL_REPORTS="$ALL_REPORTS <a title=\"$TIME, rev $CSET\" href=\"http://crash-stats.mozilla.com/query/query?product=Firefox&amp;platform=$STATSOS&amp;branch=$BRANCH&amp;date=&amp;range_value=30&amp;range_unit=days&amp;query_search=signature&amp;query_type=exact&amp;query=&amp;build_id=$BUILDID&amp;process_type=any&amp;hang_type=any&amp;do_query=1\">$ORIGOS</a>"
-                BROWSER_CRASHES="$BROWSER_CRASHES <a title=\"$TIME, rev $CSET\" href=\"http://crash-stats.mozilla.com/query/query?product=Firefox&amp;platform=$STATSOS&amp;branch=$BRANCH&amp;date=&amp;range_value=30&amp;range_unit=days&amp;query_search=signature&amp;query_type=exact&amp;query=&amp;build_id=$BUILDID&amp;process_type=browser&amp;hang_type=crash&amp;do_query=1\">$ORIGOS</a>"
+                ALL_REPORTS="$ALL_REPORTS <a title=\"$TIME, rev $CSET\" href=\"http://crash-stats.mozilla.com/query/query?product=Firefox&amp;platform=$STATSOS&amp;branch=$BRANCH&amp;date=&amp;range_value=30&amp;range_unit=days&amp;query_search=signature&amp;query_type=exact&amp;query=&amp;build_id=$BUILDID&amp;process_type=any&amp;hang_type=any&amp;do_query=1\">$DISPLAYOS</a>"
+                BROWSER_CRASHES="$BROWSER_CRASHES <a title=\"$TIME, rev $CSET\" href=\"http://crash-stats.mozilla.com/query/query?product=Firefox&amp;platform=$STATSOS&amp;branch=$BRANCH&amp;date=&amp;range_value=30&amp;range_unit=days&amp;query_search=signature&amp;query_type=exact&amp;query=&amp;build_id=$BUILDID&amp;process_type=browser&amp;hang_type=crash&amp;do_query=1\">$DISPLAYOS</a>"
             fi
         done
     done
