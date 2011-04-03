@@ -72,8 +72,8 @@ do
                     ALL_REPORTS="$ALL_REPORTS $DISPLAYOS"
                     BROWSER_CRASHES="$BROWSER_CRASHES $DISPLAYOS"
                 else
-                    ALL_REPORTS="$ALL_REPORTS <a title=\"$TIME, rev $CSET\" href=\"http://crash-stats.mozilla.com/query/query?product=Firefox&amp;platform=$STATSOS&amp;branch=$BRANCH&amp;date=&amp;range_value=30&amp;range_unit=days&amp;query_search=signature&amp;query_type=exact&amp;query=&amp;build_id=$BUILDID&amp;process_type=any&amp;hang_type=any&amp;do_query=1\">$DISPLAYOS</a>"
-                    BROWSER_CRASHES="$BROWSER_CRASHES <a title=\"$TIME, rev $CSET\" href=\"http://crash-stats.mozilla.com/query/query?product=Firefox&amp;platform=$STATSOS&amp;branch=$BRANCH&amp;date=&amp;range_value=30&amp;range_unit=days&amp;query_search=signature&amp;query_type=exact&amp;query=&amp;build_id=$BUILDID&amp;process_type=browser&amp;hang_type=crash&amp;do_query=1\">$DISPLAYOS</a>"
+                    ALL_REPORTS="$ALL_REPORTS <a title=\"$TIME, rev $CSET\" href=\"http://crash-stats.mozilla.com/query/query?product=Firefox&amp;platform=$STATSOS&amp;branch=$BRANCH&amp;version=ALL%3AALL&amp;date=&amp;range_value=30&amp;range_unit=days&amp;query_search=signature&amp;query_type=exact&amp;query=&amp;build_id=$BUILDID&amp;process_type=any&amp;hang_type=any&amp;do_query=1\">$DISPLAYOS</a>"
+                    BROWSER_CRASHES="$BROWSER_CRASHES <a title=\"$TIME, rev $CSET\" href=\"http://crash-stats.mozilla.com/query/query?product=Firefox&amp;platform=$STATSOS&amp;branch=$BRANCH&amp;version=ALL%3AALL&amp;date=&amp;range_value=30&amp;range_unit=days&amp;query_search=signature&amp;query_type=exact&amp;query=&amp;build_id=$BUILDID&amp;process_type=browser&amp;hang_type=crash&amp;do_query=1\">$DISPLAYOS</a>"
                 fi
             done
         done
