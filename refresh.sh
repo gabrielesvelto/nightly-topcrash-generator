@@ -61,6 +61,7 @@ do
                   4.2*) BRANCH=2.2 ;;
                   5.0*) BRANCH=2.2 ;;
                   6.0*) BRANCH=2.2 ;;
+                  7.0*) BRANCH=2.2 ;;
                   *)    BRANCH=unknown ;;
                 esac
                 TIME="${BUILDID:8:2}:${BUILDID:10:2}:${BUILDID:12:2}"
