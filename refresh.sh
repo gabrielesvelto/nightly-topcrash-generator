@@ -46,7 +46,7 @@ do
                 # FIXME: If win64/win32 or linux64/linux32 have the same
                 # build ID, I really need to unify them into a single linux
                 # or win link since the queries don't distinguish.
-                DISPLAYOS=$(echo "$ORIGOS" | sed 's/win64-x86_64/win/;s/linux-i686/linux/;s/linux-x86_64/linux/;s/mac64/mac/')
+                DISPLAYOS=$(echo "$ORIGOS" | sed 's/win64-x86_64/win/;s/win32/win/;s/linux-i686/linux/;s/linux-x86_64/linux/;s/mac64/mac/')
                 # The .txt files have different formats on 2011-01-26 and
                 # earlier (one line, space-separated values, changeset value
                 # is only hash) and on 2011-01-27 and later (two lines, and
