@@ -88,6 +88,13 @@ done
 cat >>$DESTHTML <<EOM
 </table>
 
+<p>
+Source code:
+<a href="https://hg.mozilla.org/users/dbaron_mozilla.com/nightly-topcrash-generator/">in Mercurial</a>
+or
+<a href="https://github.com/dbaron/nightly-topcrash-generator/">mirror on GitHub</a>
+</p>
+
 </body>
 </html>
 EOM
