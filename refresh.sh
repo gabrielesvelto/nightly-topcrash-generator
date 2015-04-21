@@ -44,7 +44,7 @@ do
             do
                 TXTPATH="$DIR/$TXTFILE"
                 ORIGOS=$(echo "$TXTFILE" | sed 's/.*\.en-US\.//;s/\.txt$//')
-                STATSOS=$(echo "$ORIGOS" | sed 's/win32/win/;s/win64-x86_64/win/;s/linux-i686/lin/;s/linux-x86_64/lin/;s/mac64/mac/')
+                STATSOS=$(echo "$ORIGOS" | sed 's/win32/Windows/;s/win64-x86_64/Windows/;s/linux-i686/Linux/;s/linux-x86_64/Linux/;s/mac64/Mac OS X/')
                 DISPLAYOS=$(echo "$ORIGOS" | sed 's/win64-x86_64/win/;s/win32/win/;s/linux-i686/linux/;s/linux-x86_64/linux/;s/mac64/mac/')
                 # The .txt files have different formats on 2011-01-26 and
                 # earlier (one line, space-separated values, changeset value
@@ -52,15 +52,15 @@ do
                 # changeset value is URL).  See
                 # https://bugzilla.mozilla.org/show_bug.cgi?id=549958 .
                 BUILDID=$(head -1 "$TXTPATH" | awk '{ print $1 }')
-                FXVER="Firefox%3A$(echo "$TXTFILE" | sed 's/^firefox-//;s/\.en-US\..*//')"
+                FXVER="$(echo "$TXTFILE" | sed 's/^firefox-//;s/\.en-US\..*//')"
                 TIME="${BUILDID:8:2}:${BUILDID:10:2}:${BUILDID:12:2}"
                 CSET=$(cat "$TXTPATH" | awk '{ print $2 }')
                 if [ -z "$CSET" ]
                 then
                     CSET=$(head -2 "$TXTPATH" | tail -1 | sed 's,.*/,,')
                 fi
-                ALLENTRY="<a title=\"$TIME, rev $CSET\" href=\"https://crash-stats.mozilla.com/query/?product=Firefox&amp;version=$FXVER&amp;platform=$STATSOS&amp;range_value=30&amp;range_unit=days&amp;date=$QUERYDATE&amp;query_search=signature&amp;query_type=is_exactly&amp;query=&amp;reason=&amp;release_channels=&amp;build_id=$BUILDID&amp;process_type=any&amp;hang_type=any\">$DISPLAYOS</a>"
-                BROWSERENTRY="<a title=\"$TIME, rev $CSET\" href=\"https://crash-stats.mozilla.com/query/?product=Firefox&amp;version=$FXVER&amp;platform=$STATSOS&amp;range_value=30&amp;range_unit=days&amp;date=$QUERYDATE&amp;query_search=signature&amp;query_type=is_exactly&amp;query=&amp;reason=&amp;release_channels=&amp;build_id=$BUILDID&amp;process_type=browser&amp;hang_type=crash\">$DISPLAYOS</a>"
+                ALLENTRY="<a ctitle=\"$TIME, rev $CSET\" href=\"https://crash-stats.mozilla.com/search/?product=Firefox&amp;build_id=$BUILDID&amp;version=$FXVER&amp;platform=$STATSOS&amp;_facets=signature\">$DISPLAYOS</a>"
+                BROWSERENTRY="<a ctitle=\"$TIME, rev $CSET\" href=\"https://crash-stats.mozilla.com/search/?product=Firefox&amp;build_id=$BUILDID&amp;version=$FXVER&amp;platform=$STATSOS&amp;process_type=browser&amp;hang_type=crash&amp;_facets=signature\">$DISPLAYOS</a>"
                 # Coalesce 32/64 bit builds with the same build ID.
                 if [ "$ALLENTRY" != "$PREVALLENTRY" -o "$BROWSERENTRY" != "$PREVBROWSERENTRY" ]
                 then
