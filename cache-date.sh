@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SERVERPATH=https://archive.mozilla.org/pub/firefox/nightly/
+SERVERPATH=https://archive.mozilla.org/pub/firefox/nightly
 BRANCH=mozilla-central
 LOCALCACHE=$(dirname $0)/cache
 
