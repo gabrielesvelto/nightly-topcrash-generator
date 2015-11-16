@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SERVERPATH=http://ftp.mozilla.org/pub/mozilla.org/firefox/nightly
+SERVERPATH=https://archive.mozilla.org/pub/firefox/nightly/
 BRANCH=mozilla-central
 LOCALCACHE=$(dirname $0)/cache
 
@@ -23,10 +23,10 @@ MONTH=$(date +%m --date="$DATE")
 YMD=$(date +%F --date="$DATE")
 
 MONTHLIST="$SERVERPATH/$YEAR/$MONTH"
-wget -q -O - "$MONTHLIST/"  | grep "icons/folder.gif" | sed 's/.*<a href="\([^"]*\)".*/\1/' | grep "$BRANCH/$" | sed 's,/$,,' | grep "^$YMD" | while read BUILDDIR
+wget -q -O - "$MONTHLIST/"  | grep "<a href=" | sed 's/.*<a href="\([^"]*\)".*/\1/' | grep "$BRANCH/$" | sed 's,/$,,;s,.*/,,' | grep "^$YMD" | while read BUILDDIR
 do
     HOURLIST="$MONTHLIST/$BUILDDIR"
-    wget -q -O - "$HOURLIST/" | grep '<img src="/icons/' | grep "<a href=" | sed 's/.*<a href="\([^"]*\)".*/\1/' | grep "\.txt$" | while read TXTFILE
+    wget -q -O - "$HOURLIST/" | grep "<a href=" | sed 's/.*<a href="\([^"]*\)".*/\1/' | grep "\.txt$" | while read TXTFILE
     do
         TXTPATH="$HOURLIST/$TXTFILE"
         DEST="$LOCALCACHE/$BUILDDIR/$TXTFILE"
