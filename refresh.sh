@@ -61,7 +61,7 @@ do
                     CSET=$(head -2 "$TXTPATH" | tail -1 | sed 's,.*/,,')
                 fi
                 ALLENTRY="<a title=\"$TIME, rev $CSET\" href=\"https://crash-stats.mozilla.com/search/?product=Firefox&amp;build_id=$BUILDID&amp;version=$FXVER&amp;platform=$STATSOS&amp;date=>%3D$DATE&amp;_facets=signature\">$DISPLAYOS</a>"
-                BROWSERENTRY="<a title=\"$TIME, rev $CSET\" href=\"https://crash-stats.mozilla.com/search/?product=Firefox&amp;build_id=$BUILDID&amp;version=$FXVER&amp;platform=$STATSOS&amp;date=>%3D$DATE&amp;process_type=browser&amp;hang_type=crash&amp;_facets=signature\">$DISPLAYOS</a>"
+                BROWSERENTRY="<a title=\"$TIME, rev $CSET\" href=\"https://crash-stats.mozilla.com/search/?product=Firefox&amp;build_id=$BUILDID&amp;version=$FXVER&amp;platform=$STATSOS&amp;date=>%3D$DATE&amp;process_type=browser&amp;process_type=content&amp;hang_type=crash&amp;_facets=signature\">$DISPLAYOS</a>"
                 # Coalesce 32/64 bit builds with the same build ID.
                 if [ "$ALLENTRY" != "$PREVALLENTRY" -o "$BROWSERENTRY" != "$PREVBROWSERENTRY" ]
                 then
