@@ -53,14 +53,15 @@ do
                 # https://bugzilla.mozilla.org/show_bug.cgi?id=549958 .
                 BUILDID=$(head -1 "$TXTPATH" | awk '{ print $1 }')
                 FXVER="$(echo "$TXTFILE" | sed 's/^firefox-//;s/\.en-US\..*//')"
+                DATE="${BUILDID:0:4}-${BUILDID:4:2}-${BUILDID:6:2}"
                 TIME="${BUILDID:8:2}:${BUILDID:10:2}:${BUILDID:12:2}"
                 CSET=$(cat "$TXTPATH" | awk '{ print $2 }')
                 if [ -z "$CSET" ]
                 then
                     CSET=$(head -2 "$TXTPATH" | tail -1 | sed 's,.*/,,')
                 fi
-                ALLENTRY="<a title=\"$TIME, rev $CSET\" href=\"https://crash-stats.mozilla.com/search/?product=Firefox&amp;build_id=$BUILDID&amp;version=$FXVER&amp;platform=$STATSOS&amp;_facets=signature\">$DISPLAYOS</a>"
-                BROWSERENTRY="<a title=\"$TIME, rev $CSET\" href=\"https://crash-stats.mozilla.com/search/?product=Firefox&amp;build_id=$BUILDID&amp;version=$FXVER&amp;platform=$STATSOS&amp;process_type=browser&amp;hang_type=crash&amp;_facets=signature\">$DISPLAYOS</a>"
+                ALLENTRY="<a title=\"$TIME, rev $CSET\" href=\"https://crash-stats.mozilla.com/search/?product=Firefox&amp;build_id=$BUILDID&amp;version=$FXVER&amp;platform=$STATSOS&amp;date=>%3D$DATE&amp;_facets=signature\">$DISPLAYOS</a>"
+                BROWSERENTRY="<a title=\"$TIME, rev $CSET\" href=\"https://crash-stats.mozilla.com/search/?product=Firefox&amp;build_id=$BUILDID&amp;version=$FXVER&amp;platform=$STATSOS&amp;date=>%3D$DATE&amp;process_type=browser&amp;hang_type=crash&amp;_facets=signature\">$DISPLAYOS</a>"
                 # Coalesce 32/64 bit builds with the same build ID.
                 if [ "$ALLENTRY" != "$PREVALLENTRY" -o "$BROWSERENTRY" != "$PREVBROWSERENTRY" ]
                 then
