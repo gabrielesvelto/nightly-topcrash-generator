@@ -13,6 +13,9 @@ cat >>$DESTHTML <<EOM
 <html>
 <head>
 <title>Firefox mozilla-central nightly build crashes, by build</title>
+<style>
+div.branch { float: left }
+</style>
 </head>
 <body>
 <h1>Firefox mozilla-central nightly build crashes, by build</h1>
@@ -33,6 +36,7 @@ build_table() {
     fi
 
     cat >>$DESTHTML <<EOM
+<div class="branch" id="branch-$BRANCH">
 <h2>$BRANCH</h2>
 <table border>
 <tr><th>Year</th><th>Mon</th><th>Dy</th><th>Hr</th><th>All Crash Reports</th><th>Browser Crashes Only</th></tr>
@@ -109,6 +113,7 @@ EOM
 
     cat >>$DESTHTML <<EOM
 </table>
+</div>
 EOM
 
 }
