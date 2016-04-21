@@ -21,6 +21,17 @@ EOM
 build_table() {
     BRANCH=$1
 
+    if [ "$BRANCH" = "mozilla-central" ]
+    then
+        CHANNEL=nightly
+    elif [ "$BRANCH" = "mozilla-aurora" ]
+    then
+        CHANNEL=aurora
+    else
+        echo "Unexpected branch" 1>&2
+        return
+    fi
+
     cat >>$DESTHTML <<EOM
 <h2>$BRANCH</h2>
 <table border>
@@ -70,8 +81,8 @@ EOM
                     then
                         CSET=$(head -2 "$TXTPATH" | tail -1 | sed 's,.*/,,')
                     fi
-                    ALLENTRY="<a title=\"$TIME, rev $CSET\" href=\"https://crash-stats.mozilla.com/search/?product=$PRODUCT&amp;build_id=$BUILDID&amp;platform=$STATSOS&amp;date=>%3D$DATE&amp;release_channel=nightly&amp;_facets=signature\">$DISPLAYOS</a>"
-                    BROWSERENTRY="<a title=\"$TIME, rev $CSET\" href=\"https://crash-stats.mozilla.com/search/?product=$PRODUCT&amp;build_id=$BUILDID&amp;platform=$STATSOS&amp;date=>%3D$DATE&amp;release_channel=nightly&amp;process_type=browser&amp;process_type=content&amp;hang_type=crash&amp;_facets=signature\">$DISPLAYOS</a>"
+                    ALLENTRY="<a title=\"$TIME, rev $CSET\" href=\"https://crash-stats.mozilla.com/search/?product=$PRODUCT&amp;build_id=$BUILDID&amp;platform=$STATSOS&amp;date=>%3D$DATE&amp;release_channel=$CHANNEL&amp;_facets=signature\">$DISPLAYOS</a>"
+                    BROWSERENTRY="<a title=\"$TIME, rev $CSET\" href=\"https://crash-stats.mozilla.com/search/?product=$PRODUCT&amp;build_id=$BUILDID&amp;platform=$STATSOS&amp;date=>%3D$DATE&amp;release_channel=$CHANNEL&amp;process_type=browser&amp;process_type=content&amp;hang_type=crash&amp;_facets=signature\">$DISPLAYOS</a>"
                     # Coalesce 32/64 bit builds with the same build ID.
                     if [ "$ALLENTRY" != "$PREVALLENTRY" -o "$BROWSERENTRY" != "$PREVBROWSERENTRY" ]
                     then
