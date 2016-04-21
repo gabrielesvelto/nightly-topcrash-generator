@@ -1,7 +1,5 @@
 #!/bin/bash
 
-SERVERPATH=https://archive.mozilla.org/pub/firefox/nightly
-BRANCH=mozilla-central
 LOCALCACHE=$(dirname $0)/cache
 
 if [ $# -ne 1 ]
@@ -18,19 +16,34 @@ then
     exit 1
 fi
 
-YEAR=$(date +%Y --date="$DATE")
-MONTH=$(date +%m --date="$DATE")
-YMD=$(date +%F --date="$DATE")
+do_branch()
+{
+    PRODUCT=$1
+    BRANCH=$2
 
-MONTHLIST="$SERVERPATH/$YEAR/$MONTH"
-wget -q -O - "$MONTHLIST/"  | grep "<a href=" | sed 's/.*<a href="\([^"]*\)".*/\1/' | grep "$BRANCH/$" | sed 's,/$,,;s,.*/,,' | grep "^$YMD" | while read BUILDDIR
-do
-    HOURLIST="$MONTHLIST/$BUILDDIR"
-    wget -q -O - "$HOURLIST/" | grep "<a href=" | sed 's/.*<a href="\([^"]*\)".*/\1/;s,.*/,,' | grep "\.txt$" | while read TXTFILE
+    SERVERPATH=https://archive.mozilla.org/pub/$PRODUCT/nightly
+
+    YEAR=$(date +%Y --date="$DATE")
+    MONTH=$(date +%m --date="$DATE")
+    YMD=$(date +%F --date="$DATE")
+
+    MONTHLIST="$SERVERPATH/$YEAR/$MONTH"
+    wget -q -O - "$MONTHLIST/"  | grep "<a href=" | sed 's/.*<a href="\([^"]*\)".*/\1/' | grep "$BRANCH/$" | sed 's,/$,,;s,.*/,,' | grep "^$YMD" | while read BUILDDIR
     do
-        TXTPATH="$HOURLIST/$TXTFILE"
-        DEST="$LOCALCACHE/$BUILDDIR/$TXTFILE"
-        mkdir -p $(dirname "$DEST")
-        wget -q -O - "$TXTPATH" >| "$DEST"
+        HOURLIST="$MONTHLIST/$BUILDDIR"
+        wget -q -O - "$HOURLIST/" | grep "<a href=" | sed 's/.*<a href="\([^"]*\)".*/\1/;s,.*/,,' | grep "\.txt$" | while read TXTFILE
+        do
+            TXTPATH="$HOURLIST/$TXTFILE"
+            DEST="$LOCALCACHE/$BUILDDIR/$TXTFILE"
+            mkdir -p $(dirname "$DEST")
+            wget -q -O - "$TXTPATH" >| "$DEST"
+        done
     done
-done
+}
+
+do_branch firefox mozilla-central
+# Assume that all Android builds match android-api-15 ones
+do_branch mobile mozilla-central-android-api-15
+do_branch firefox mozilla-aurora
+# Assume that all Android builds match android-api-15 ones
+do_branch mobile mozilla-aurora-android-api-15
