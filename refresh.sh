@@ -15,6 +15,7 @@ cat >>$DESTHTML <<EOM
 <title>Firefox mozilla-central nightly build crashes, by build</title>
 <style>
 div.branch { float: left }
+div.footer { clear: both }
 </style>
 </head>
 <body>
@@ -122,13 +123,14 @@ build_table mozilla-central
 build_table mozilla-aurora
 
 cat >>$DESTHTML <<EOM
+<div class="footer">
 <p>
 Source code:
 <a href="https://hg.mozilla.org/users/dbaron_mozilla.com/nightly-topcrash-generator/">in Mercurial</a>
 or
 <a href="https://github.com/dbaron/nightly-topcrash-generator/">mirror on GitHub</a>
 </p>
-
+</div>
 </body>
 </html>
 EOM
