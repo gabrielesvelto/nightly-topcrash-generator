@@ -16,10 +16,169 @@ cat >>$DESTHTML <<EOM
 <style>
 div.branch { float: left }
 div.footer { clear: both }
+
+#regression-container.notstarted > #regression-cancel,
+#regression-container.notstarted > #regression-clear,
+#regression-container.notstarted > #regression-data,
+#regression-container.choose1 > #regression-start,
+#regression-container.choose1 > #regression-clear,
+#regression-container.choose1 > #regression-data,
+#regression-container.choose2 > #regression-start,
+#regression-container.choose2 > #regression-clear,
+#regression-container.choose2 > #regression-data,
+#regression-container.found > #regression-start,
+#regression-container.found > #regression-cancel
+{
+  display: none
+}
+
+body.choose div.branch table a {
+  background: silver;
+  color: black;
+}
+
+body.choose2 div.branch table a:not(.choose-eligible) {
+  color: gray;
+}
 </style>
+<script>
+var gRegression1, gRegression2;
+function regression_choose()
+{
+  document.body.classList.add("choose");
+  document.body.classList.add("choose1");
+  document.getElementById("regression-container").className = "choose1";
+  document.body.addEventListener("click", choose_clickhandler, true);
+}
+
+function branch_table_for_link(link)
+{
+  var table = link;
+  while (table.tagName != "TABLE") {
+    table = table.parentNode;
+  }
+  return table;
+}
+
+function choose_clickhandler(event)
+{
+  let target = event.target;
+  if (target.tagName != "A" || target.parentNode.tagName != "TD") {
+    return;
+  }
+
+  if (document.body.classList.contains("choose1")) {
+    gRegression1 = target;
+    document.body.classList.remove("choose1");
+    document.body.classList.add("choose2");
+    document.getElementById("regression-container").className = "choose2";
+
+    let targetPlatform = target.textContent;
+    for (let link of branch_table_for_link(target).querySelectorAll("a")) {
+      if (link.textContent == targetPlatform &&
+          // don't allow choosing the same build (in either column)
+          link.title != target.title) {
+        link.classList.add("choose-eligible");
+      }
+    }
+  } else {
+    if (!target.classList.contains("choose-eligible")) {
+      return;
+    }
+
+    gRegression2 = target;
+    document.body.classList.remove("choose2");
+    document.body.classList.remove("choose");
+    document.getElementById("regression-container").className = "found";
+
+    for (let link of document.querySelectorAll("a.choose-eligible")) {
+      link.classList.remove("choose-eligible");
+    }
+  }
+
+  event.preventDefault();
+  event.stopPropagation();
+
+  if (gRegression2) {
+    document.body.removeEventListener("click", choose_clickhandler, true);
+
+    var table = branch_table_for_link(gRegression1);
+    if (branch_table_for_link(gRegression2) != table) {
+      console.log("mismatched tables");
+      regression_clear();
+      return;
+    }
+    let branch = table.parentNode.id;
+    if (branch.substring(0,7) != "branch-") {
+      console.log("bad branch id");
+      regression_clear();
+      return;
+    }
+    branch = branch.substring(7);
+    let url = "https://hg.mozilla.org/";
+    if (branch == "mozilla-central") {
+      url += "mozilla-central";
+    } else if (branch == "mozilla-aurora") {
+      url += "releases/mozilla-aurora";
+    } else {
+      console.log("unknown branch");
+      regression_clear();
+      return;
+    }
+	let rev1, rev2, build1, build2;
+	try {
+      // FIXME: Why does this fail with "$" at end?
+      //let rev_re = new RegExp("^[0-9]{2}:[0-9]{2}:[0-9]{2}, rev ([0-9a-f]{40})\s?$");
+      let rev_re = new RegExp("^[0-9]{2}:[0-9]{2}:[0-9]{2}, rev ([0-9a-f]{40})\s?");
+	  console.log(gRegression1.title);
+      [, rev1] = rev_re.exec(gRegression1.title);
+      [, rev2] = rev_re.exec(gRegression2.title);
+      let buildid_re = new RegExp("&build_id=([0-9]{14})&");
+      [, build1] = buildid_re.exec(gRegression1.href);
+      [, build2] = buildid_re.exec(gRegression2.href);
+	} catch (ex) {
+      console.log("bad link data", ex);
+      regression_clear();
+      return;
+    }
+    let fromchange, tochange;
+    if (build1 > build2) {
+      [fromchange, tochange] = [rev2, rev1];
+    } else {
+      [fromchange, tochange] = [rev1, rev2];
+    }
+	url += `/pushloghtml?fromchange=${fromchange}&tochange=${tochange}`;
+
+    let a = document.getElementById("regression-link");
+    a.textContent = url;
+    a.href = url;
+  }
+}
+
+function regression_cancel()
+{
+  document.body.removeEventListener("click", choose_clickhandler, true);
+  document.getElementById("regression-container").className = "notstarted";
+  gRegression1 = null;
+  gRegression2 = null;
+}
+
+function regression_clear()
+{
+  document.getElementById("regression-container").className = "notstarted";
+  gRegression1 = null;
+  gRegression2 = null;
+}
+</script>
 </head>
 <body>
 <h1>Firefox mozilla-central nightly build crashes, by build</h1>
+<div id="regression-container" class="notstarted">
+  <input type="button" id="regression-start" value="Choose regression window" onclick="regression_choose()">
+  <input type="button" id="regression-cancel" value="Cancel regression window" onclick="regression_cancel()">
+  <input type="button" id="regression-clear" value="Clear regression window" onclick="regression_clear()">
+  <div id="regression-data"><a id="regression-link"></a></div>
+</div>
 EOM
 
 build_table() {
