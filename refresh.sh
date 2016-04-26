@@ -66,6 +66,9 @@ function choose_clickhandler(event)
   if (target.tagName != "A" || target.parentNode.tagName != "TD") {
     return;
   }
+  if (event.button != 0) {
+    return;
+  }
 
   if (document.body.classList.contains("choose1")) {
     gRegression1 = target;
