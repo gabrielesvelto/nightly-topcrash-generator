@@ -75,7 +75,7 @@ function choose_clickhandler(event)
     document.getElementById("regression-container").className = "choose2";
 
     let targetPlatform = target.textContent;
-    // Array.from needed for Chromium but not Gecko
+    // Array.from needed for Chromium and Edge but not Gecko
     for (let link of Array.from(branch_table_for_link(target).querySelectorAll("a"))) {
       if (link.textContent == targetPlatform &&
           // don't allow choosing the same build (in either column)
@@ -93,7 +93,7 @@ function choose_clickhandler(event)
     document.body.classList.remove("choose");
     document.getElementById("regression-container").className = "found";
 
-    // Array.from needed for Chromium but not Gecko
+    // Array.from needed for Chromium and Edge but not Gecko
     for (let link of Array.from(document.querySelectorAll("a.choose-eligible"))) {
       link.classList.remove("choose-eligible");
     }
@@ -132,11 +132,11 @@ function choose_clickhandler(event)
     try {
       let rev_re = new RegExp("^[0-9]{2}:[0-9]{2}:[0-9]{2}, rev ([0-9a-f]{40})$");
       console.log(gRegression1.title);
-      [, rev1] = rev_re.exec(gRegression1.title);
-      [, rev2] = rev_re.exec(gRegression2.title);
+      rev1 = rev_re.exec(gRegression1.title)[1];
+      rev2 = rev_re.exec(gRegression2.title)[1];
       let buildid_re = new RegExp("&build_id=([0-9]{14})&");
-      [, build1] = buildid_re.exec(gRegression1.href);
-      [, build2] = buildid_re.exec(gRegression2.href);
+      build1 = buildid_re.exec(gRegression1.href)[1];
+      build2 = buildid_re.exec(gRegression2.href)[1];
     } catch (ex) {
       console.log("bad link data", ex);
       regression_clear();
@@ -144,9 +144,11 @@ function choose_clickhandler(event)
     }
     let fromchange, tochange;
     if (build1 > build2) {
-      [fromchange, tochange] = [rev2, rev1];
+      fromchange = rev2;
+      tochange = rev1;
     } else {
-      [fromchange, tochange] = [rev1, rev2];
+      fromchange = rev1;
+      tochange = rev2;
     }
     url += \`/pushloghtml?fromchange=\${fromchange}&tochange=\${tochange}\`;
 
@@ -162,7 +164,7 @@ function regression_cancel()
   document.body.classList.remove("choose1");
   document.body.classList.remove("choose2");
   document.body.classList.remove("choose");
-  // Array.from needed for Chromium but not Gecko
+  // Array.from needed for Chromium and Edge but not Gecko
   for (let link of Array.from(document.querySelectorAll("a.choose-eligible"))) {
     link.classList.remove("choose-eligible");
   }
