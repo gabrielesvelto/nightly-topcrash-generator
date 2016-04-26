@@ -6,9 +6,7 @@ $(dirname $0)/cache-date.sh $(date +%F)
 LOCALCACHE=$(dirname $0)/cache
 DESTHTML=~/public_html/dbaron.org/mozilla/crashes-by-build.html
 
-"rm" $DESTHTML
-
-cat >>$DESTHTML <<EOM
+cat >>$DESTHTML-gen <<EOM
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -196,7 +194,7 @@ build_table() {
         return
     fi
 
-    cat >>$DESTHTML <<EOM
+    cat >>$DESTHTML-gen <<EOM
 <div class="branch" id="branch-$BRANCH">
 <h2>$BRANCH</h2>
 <table border>
@@ -260,7 +258,7 @@ EOM
             done
             if [ -n "$ALL_REPORTS" ]
             then
-                cat >>$DESTHTML <<EOM
+                cat >>$DESTHTML-gen <<EOM
 <tr>
 $(date --date="$DAY" +"<th>%Y</th><th>%b</th><th>%d</th>")
 <th>$HOUR</th>
@@ -272,7 +270,7 @@ EOM
         done
     done
 
-    cat >>$DESTHTML <<EOM
+    cat >>$DESTHTML-gen <<EOM
 </table>
 </div>
 EOM
@@ -282,7 +280,7 @@ EOM
 build_table mozilla-central
 build_table mozilla-aurora
 
-cat >>$DESTHTML <<EOM
+cat >>$DESTHTML-gen <<EOM
 <div class="footer">
 <p>
 Source code:
@@ -294,3 +292,5 @@ or
 </body>
 </html>
 EOM
+
+"mv" $DESTHTML-gen $DESTHTML
