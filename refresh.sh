@@ -147,7 +147,7 @@ function choose_clickhandler(event)
     } else {
       [fromchange, tochange] = [rev1, rev2];
     }
-    url += `/pushloghtml?fromchange=${fromchange}&tochange=${tochange}`;
+    url += \`/pushloghtml?fromchange=\${fromchange}&tochange=\${tochange}\`;
 
     let a = document.getElementById("regression-link");
     a.textContent = url;
