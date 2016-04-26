@@ -157,6 +157,12 @@ function choose_clickhandler(event)
 function regression_cancel()
 {
   document.body.removeEventListener("click", choose_clickhandler, true);
+  document.body.classList.remove("choose1");
+  document.body.classList.remove("choose2");
+  document.body.classList.remove("choose");
+  for (let link of document.querySelectorAll("a.choose-eligible")) {
+    link.classList.remove("choose-eligible");
+  }
   document.getElementById("regression-container").className = "notstarted";
   gRegression1 = null;
   gRegression2 = null;
