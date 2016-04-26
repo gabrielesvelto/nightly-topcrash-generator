@@ -131,8 +131,8 @@ function choose_clickhandler(event)
     let rev1, rev2, build1, build2;
     try {
       // FIXME: Why does this fail with "$" at end?
-      //let rev_re = new RegExp("^[0-9]{2}:[0-9]{2}:[0-9]{2}, rev ([0-9a-f]{40})\s?$");
-      let rev_re = new RegExp("^[0-9]{2}:[0-9]{2}:[0-9]{2}, rev ([0-9a-f]{40})\s?");
+      //let rev_re = new RegExp("^[0-9]{2}:[0-9]{2}:[0-9]{2}, rev ([0-9a-f]{40})$");
+      let rev_re = new RegExp("^[0-9]{2}:[0-9]{2}:[0-9]{2}, rev ([0-9a-f]{40})");
       console.log(gRegression1.title);
       [, rev1] = rev_re.exec(gRegression1.title);
       [, rev2] = rev_re.exec(gRegression2.title);
@@ -246,7 +246,7 @@ EOM
                     CSET=$(cat "$TXTPATH" | awk '{ print $2 }')
                     if [ -z "$CSET" ]
                     then
-                        CSET=$(head -2 "$TXTPATH" | tail -1 | sed 's,.*/,,')
+                        CSET=$(head -2 "$TXTPATH" | tail -1 | sed 's,.*/,,' | tr -d '\r\n')
                     fi
                     ALLENTRY="<a title=\"$TIME, rev $CSET\" href=\"https://crash-stats.mozilla.com/search/?product=$PRODUCT&amp;build_id=$BUILDID&amp;platform=$STATSOS&amp;date=>%3D$DATE&amp;release_channel=$CHANNEL&amp;_facets=signature\">$DISPLAYOS</a>"
                     BROWSERENTRY="<a title=\"$TIME, rev $CSET\" href=\"https://crash-stats.mozilla.com/search/?product=$PRODUCT&amp;build_id=$BUILDID&amp;platform=$STATSOS&amp;date=>%3D$DATE&amp;release_channel=$CHANNEL&amp;process_type=browser&amp;process_type=content&amp;hang_type=crash&amp;_facets=signature\">$DISPLAYOS</a>"
