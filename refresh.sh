@@ -75,7 +75,8 @@ function choose_clickhandler(event)
     document.getElementById("regression-container").className = "choose2";
 
     let targetPlatform = target.textContent;
-    for (let link of branch_table_for_link(target).querySelectorAll("a")) {
+    // Array.from needed for Chromium but not Gecko
+    for (let link of Array.from(branch_table_for_link(target).querySelectorAll("a"))) {
       if (link.textContent == targetPlatform &&
           // don't allow choosing the same build (in either column)
           link.title != target.title) {
@@ -92,7 +93,8 @@ function choose_clickhandler(event)
     document.body.classList.remove("choose");
     document.getElementById("regression-container").className = "found";
 
-    for (let link of document.querySelectorAll("a.choose-eligible")) {
+    // Array.from needed for Chromium but not Gecko
+    for (let link of Array.from(document.querySelectorAll("a.choose-eligible"))) {
       link.classList.remove("choose-eligible");
     }
   }
@@ -160,7 +162,8 @@ function regression_cancel()
   document.body.classList.remove("choose1");
   document.body.classList.remove("choose2");
   document.body.classList.remove("choose");
-  for (let link of document.querySelectorAll("a.choose-eligible")) {
+  // Array.from needed for Chromium but not Gecko
+  for (let link of Array.from(document.querySelectorAll("a.choose-eligible"))) {
     link.classList.remove("choose-eligible");
   }
   document.getElementById("regression-container").className = "notstarted";
