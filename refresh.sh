@@ -12,7 +12,7 @@ cat >>$DESTHTML <<EOM
 <!DOCTYPE HTML>
 <html>
 <head>
-<title>Firefox mozilla-central nightly build crashes, by build</title>
+<title>Firefox nightly build crashes, by build</title>
 <style>
 div.branch { float: left }
 div.footer { clear: both }
@@ -172,7 +172,7 @@ function regression_clear()
 </script>
 </head>
 <body>
-<h1>Firefox mozilla-central nightly build crashes, by build</h1>
+<h1>Firefox nightly build crashes, by build</h1>
 <div id="regression-container" class="notstarted">
   <input type="button" id="regression-start" value="Choose regression window" onclick="regression_choose()">
   <input type="button" id="regression-cancel" value="Cancel regression window" onclick="regression_cancel()">
