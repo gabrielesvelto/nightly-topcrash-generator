@@ -130,9 +130,7 @@ function choose_clickhandler(event)
     }
     let rev1, rev2, build1, build2;
     try {
-      // FIXME: Why does this fail with "$" at end?
-      //let rev_re = new RegExp("^[0-9]{2}:[0-9]{2}:[0-9]{2}, rev ([0-9a-f]{40})$");
-      let rev_re = new RegExp("^[0-9]{2}:[0-9]{2}:[0-9]{2}, rev ([0-9a-f]{40})");
+      let rev_re = new RegExp("^[0-9]{2}:[0-9]{2}:[0-9]{2}, rev ([0-9a-f]{40})$");
       console.log(gRegression1.title);
       [, rev1] = rev_re.exec(gRegression1.title);
       [, rev2] = rev_re.exec(gRegression2.title);
