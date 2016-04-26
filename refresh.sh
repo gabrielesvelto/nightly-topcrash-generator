@@ -125,18 +125,18 @@ function choose_clickhandler(event)
       regression_clear();
       return;
     }
-	let rev1, rev2, build1, build2;
-	try {
+    let rev1, rev2, build1, build2;
+    try {
       // FIXME: Why does this fail with "$" at end?
       //let rev_re = new RegExp("^[0-9]{2}:[0-9]{2}:[0-9]{2}, rev ([0-9a-f]{40})\s?$");
       let rev_re = new RegExp("^[0-9]{2}:[0-9]{2}:[0-9]{2}, rev ([0-9a-f]{40})\s?");
-	  console.log(gRegression1.title);
+      console.log(gRegression1.title);
       [, rev1] = rev_re.exec(gRegression1.title);
       [, rev2] = rev_re.exec(gRegression2.title);
       let buildid_re = new RegExp("&build_id=([0-9]{14})&");
       [, build1] = buildid_re.exec(gRegression1.href);
       [, build2] = buildid_re.exec(gRegression2.href);
-	} catch (ex) {
+    } catch (ex) {
       console.log("bad link data", ex);
       regression_clear();
       return;
@@ -147,7 +147,7 @@ function choose_clickhandler(event)
     } else {
       [fromchange, tochange] = [rev1, rev2];
     }
-	url += `/pushloghtml?fromchange=${fromchange}&tochange=${tochange}`;
+    url += `/pushloghtml?fromchange=${fromchange}&tochange=${tochange}`;
 
     let a = document.getElementById("regression-link");
     a.textContent = url;
