@@ -27,8 +27,16 @@ do_branch()
     MONTH=$(date +%m --date="$DATE")
     YMD=$(date +%F --date="$DATE")
 
+    # Starting 2016-05-19 (on nightly), the mobile builds are in an
+    # en-US subdirectory.
+    MOBILESED=''
+    if [ "$PRODUCT" == "mobile" ]
+    then
+        MOBILESED='p;s,$,/en-US,'
+    fi
+
     MONTHLIST="$SERVERPATH/$YEAR/$MONTH"
-    wget -q -O - "$MONTHLIST/"  | grep "<a href=" | sed 's/.*<a href="\([^"]*\)".*/\1/' | grep "$BRANCH/$" | sed 's,/$,,;s,.*/,,' | grep "^$YMD" | while read BUILDDIR
+    wget -q -O - "$MONTHLIST/"  | grep "<a href=" | sed 's/.*<a href="\([^"]*\)".*/\1/' | grep "$BRANCH/$" | sed 's,/$,,;s,.*/,,' | grep "^$YMD" | sed "$MOBILESED" | while read BUILDDIR
     do
         HOURLIST="$MONTHLIST/$BUILDDIR"
         wget -q -O - "$HOURLIST/" | grep "<a href=" | sed 's/.*<a href="\([^"]*\)".*/\1/;s,.*/,,' | grep "\.txt$" | while read TXTFILE

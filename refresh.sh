@@ -6,7 +6,7 @@ $(dirname $0)/cache-date.sh $(date +%F)
 LOCALCACHE=$(dirname $0)/cache
 DESTHTML=~/public_html/dbaron.org/mozilla/crashes-by-build.html
 
-cat >>$DESTHTML-gen <<EOM
+cat >$DESTHTML-gen <<EOM
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -230,9 +230,9 @@ EOM
             PREVBROWSERENTRY=""
             for DIR in $(ls -d "$LOCALCACHE/$DAY-$HOUR-"??-??"-$BRANCH"* 2>>/dev/null)
             do
-                for TXTFILE in $(ls -r "$DIR" | grep "\(\.en-US\.\(linux-i686\|linux-x86_64\|mac\|mac64\|win32\|win64-x86_64\)\|multi\.android-arm\)\.txt$")
+                for TXTPATH in $(find "$DIR" -name "*.txt" | sort -r | grep "\(\.en-US\.\(android-arm\|linux-i686\|linux-x86_64\|mac\|mac64\|win32\|win64-x86_64\)\|multi\.android-arm\)\.txt$")
                 do
-                    TXTPATH="$DIR/$TXTFILE"
+                    TXTFILE=$(basename "$TXTPATH")
                     ORIGOS=$(echo "$TXTFILE" | sed 's/.*\.en-US\.//;s/.*\.multi\.//;s/\.txt$//')
                     STATSOS=$(echo "$ORIGOS" | sed 's/win32/Windows/;s/win64-x86_64/Windows/;s/linux-i686/Linux/;s/linux-x86_64/Linux/;s/mac64/Mac OS X/;s/android-arm/Android/')
                     DISPLAYOS=$(echo "$ORIGOS" | sed 's/win64-x86_64/win/;s/win32/win/;s/linux-i686/linux/;s/linux-x86_64/linux/;s/mac64/mac/;s/android-arm/android/')
