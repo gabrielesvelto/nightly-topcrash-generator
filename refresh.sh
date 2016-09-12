@@ -234,7 +234,7 @@ EOM
                 do
                     TXTFILE=$(basename "$TXTPATH")
                     ORIGOS=$(echo "$TXTFILE" | sed 's/.*\.en-US\.//;s/.*\.multi\.//;s/\.txt$//')
-                    STATSOS=$(echo "$ORIGOS" | sed 's/win32/Windows/;s/win64-x86_64/Windows/;s/linux-i686/Linux/;s/linux-x86_64/Linux/;s/mac64/Mac OS X/;s/android-arm/Android/')
+                    STATSOS=$(echo "$ORIGOS" | sed 's/win32/Windows/;s/win64-x86_64/Windows/;s/linux-i686/Linux/;s/linux-x86_64/Linux/;s/mac64/Mac OS X/;s/mac/Mac OS X/;s/android-arm/Android/')
                     DISPLAYOS=$(echo "$ORIGOS" | sed 's/win64-x86_64/win/;s/win32/win/;s/linux-i686/linux/;s/linux-x86_64/linux/;s/mac64/mac/;s/android-arm/android/')
                     PRODUCT=Firefox
                     if [ "$DISPLAYOS" = "android" ]
