@@ -4,9 +4,10 @@ $(dirname $0)/cache-date.sh $(date --date="1 day ago" +%F)
 $(dirname $0)/cache-date.sh $(date +%F)
 
 LOCALCACHE=$(dirname $0)/cache
-DESTHTML=~/public_html/dbaron.org/mozilla/crashes-by-build.html
+DESTHTML=/var/www/html/mozilla/crashes-by-build.html
+TMPHTML=~/crashes-by-build-gen
 
-cat >$DESTHTML-gen <<EOM
+cat >$TMPHTML <<EOM
 <!DOCTYPE HTML>
 <html>
 <head>
@@ -204,7 +205,7 @@ build_table() {
         return
     fi
 
-    cat >>$DESTHTML-gen <<EOM
+    cat >>$TMPHTML <<EOM
 <div class="branch" id="branch-$BRANCH">
 <h2>$BRANCH</h2>
 <table border>
@@ -268,7 +269,7 @@ EOM
             done
             if [ -n "$ALL_REPORTS" ]
             then
-                cat >>$DESTHTML-gen <<EOM
+                cat >>$TMPHTML <<EOM
 <tr>
 $(date --date="$DAY" +"<th>%Y</th><th>%b</th><th>%d</th>")
 <th>$HOUR</th>
@@ -280,7 +281,7 @@ EOM
         done
     done
 
-    cat >>$DESTHTML-gen <<EOM
+    cat >>$TMPHTML <<EOM
 </table>
 </div>
 EOM
@@ -290,7 +291,7 @@ EOM
 build_table mozilla-central
 build_table mozilla-aurora
 
-cat >>$DESTHTML-gen <<EOM
+cat >>$TMPHTML <<EOM
 <div class="footer">
 <p>
 Source code:
@@ -303,4 +304,7 @@ or
 </html>
 EOM
 
-"mv" $DESTHTML-gen $DESTHTML
+# Use cat rather than mv (even though it's less atomic) because it means
+# we only need permissions for the file, not the directory.
+"cat" $TMPHTML > $DESTHTML
+"rm" $TMPHTML
