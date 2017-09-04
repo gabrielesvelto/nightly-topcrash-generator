@@ -50,8 +50,5 @@ do_branch()
 }
 
 do_branch firefox mozilla-central
-# Assume that all Android builds match android-api-15 ones
+# Assume that all Android builds match android-api-16 ones
 do_branch mobile mozilla-central-android-api-16
-do_branch firefox mozilla-aurora
-# Assume that all Android builds match android-api-15 ones
-do_branch mobile mozilla-aurora-android-api-16
