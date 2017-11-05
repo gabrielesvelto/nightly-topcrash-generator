@@ -289,7 +289,7 @@ EOM
 }
 
 build_table mozilla-central
-build_table mozilla-aurora
+#build_table mozilla-aurora
 
 cat >>$TMPHTML <<EOM
 <div class="footer">
