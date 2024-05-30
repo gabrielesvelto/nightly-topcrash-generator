@@ -7,7 +7,7 @@ LOCALCACHE="$(dirname $0)/cache"
 DESTPATH="${1:-/var/www/html/mozilla}"
 DESTHTML="${DESTPATH}/crashes-by-build.html"
 DESTCSS="${DESTPATH}/crashes-by-build-style.css"
-TMPHTML=~/crashes-by-build-gen
+TMPHTML="$(mktemp)"
 
 cat >$TMPHTML <<EOM
 <!DOCTYPE HTML>
