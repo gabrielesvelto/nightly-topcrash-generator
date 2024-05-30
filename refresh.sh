@@ -3,8 +3,10 @@
 $(dirname $0)/cache-date.sh $(date --date="1 day ago" +%F)
 $(dirname $0)/cache-date.sh $(date +%F)
 
-LOCALCACHE=$(dirname $0)/cache
-DESTHTML=/var/www/html/mozilla/crashes-by-build.html
+LOCALCACHE="$(dirname $0)/cache"
+DESTPATH="${1:-/var/www/html/mozilla}"
+DESTHTML="${DESTPATH}/crashes-by-build.html"
+DESTCSS="${DESTPATH}/style.css"
 TMPHTML=~/crashes-by-build-gen
 
 cat >$TMPHTML <<EOM
