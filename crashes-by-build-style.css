@@ -1,0 +1,26 @@
+div.branch { float: left }
+div.footer { clear: both }
+
+#regression-container.notstarted > #regression-cancel,
+#regression-container.notstarted > #regression-clear,
+#regression-container.notstarted > #regression-data,
+#regression-container.choose1 > #regression-start,
+#regression-container.choose1 > #regression-clear,
+#regression-container.choose1 > #regression-data,
+#regression-container.choose2 > #regression-start,
+#regression-container.choose2 > #regression-clear,
+#regression-container.choose2 > #regression-data,
+#regression-container.found > #regression-start,
+#regression-container.found > #regression-cancel
+{
+  display: none
+}
+
+body.choose div.branch table a {
+  background: silver;
+  color: black;
+}
+
+body.choose2 div.branch table a:not(.choose-eligible) {
+  color: gray;
+}

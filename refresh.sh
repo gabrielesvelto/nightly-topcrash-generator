@@ -6,7 +6,7 @@ $(dirname $0)/cache-date.sh $(date +%F)
 LOCALCACHE="$(dirname $0)/cache"
 DESTPATH="${1:-/var/www/html/mozilla}"
 DESTHTML="${DESTPATH}/crashes-by-build.html"
-DESTCSS="${DESTPATH}/style.css"
+DESTCSS="${DESTPATH}/crashes-by-build-style.css"
 TMPHTML=~/crashes-by-build-gen
 
 cat >$TMPHTML <<EOM
@@ -14,34 +14,7 @@ cat >$TMPHTML <<EOM
 <html>
 <head>
 <title>Firefox nightly build crashes, by build</title>
-<style>
-div.branch { float: left }
-div.footer { clear: both }
-
-#regression-container.notstarted > #regression-cancel,
-#regression-container.notstarted > #regression-clear,
-#regression-container.notstarted > #regression-data,
-#regression-container.choose1 > #regression-start,
-#regression-container.choose1 > #regression-clear,
-#regression-container.choose1 > #regression-data,
-#regression-container.choose2 > #regression-start,
-#regression-container.choose2 > #regression-clear,
-#regression-container.choose2 > #regression-data,
-#regression-container.found > #regression-start,
-#regression-container.found > #regression-cancel
-{
-  display: none
-}
-
-body.choose div.branch table a {
-  background: silver;
-  color: black;
-}
-
-body.choose2 div.branch table a:not(.choose-eligible) {
-  color: gray;
-}
-</style>
+<link rel="stylesheet" href="crashes-by-build-style.css">
 <script>
 var gRegression1, gRegression2;
 function regression_choose()
@@ -306,5 +279,6 @@ EOM
 
 # Use cat rather than mv (even though it's less atomic) because it means
 # we only need permissions for the file, not the directory.
-"cat" $TMPHTML > $DESTHTML
-"rm" $TMPHTML
+cat "${TMPHTML}" > "${DESTHTML}"
+rm "${TMPHTML}"
+cat "$(dirname $0)/crashes-by-build-style.css" > "${DESTCSS}"
